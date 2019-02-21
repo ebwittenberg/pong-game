@@ -44,15 +44,13 @@ class Ball():
         pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.radius, 0)
 
     def update(self):
+
+        if self.x > canvas_width:
+            self.x = self.x - 400
         # ball moves horizontally to the right
         self.x = self.x + self.speed_x
         # ball moves downwards
         self.y = self.y + self.speed_y
-        # if ball reaches right edge of screen
-            # ball resets in the middle
-        # if ball reaches left edge of screen
-        # if self.x < 0:
-            # self.speed_x = -self.speed_x
         # if ball reaches bottom of screen
         if self.y > canvas_height:
             # redirect ball upwards
@@ -61,7 +59,7 @@ class Ball():
         if self.y < 0:
             # redirect ball downwards
             self.speed_y = -self.speed_y
-    
+
 
 class Net():
     def __init__(self, x, y):
@@ -70,21 +68,27 @@ class Net():
     def render_net(self, screen):
         pygame.draw.rect(screen, (255,255,255), (self.x, self.y, 5, 10), 0)
 
+def collision(ball, player_one_paddle, player_two_paddle):
+    # if the ball's y position and x position matches player two paddle
+    if ball.y > player_two_paddle.y - 100 and ball.y < player_two_paddle.y + 100 and ball.x == player_two_paddle.x:
+        ball.speed_x = -ball.speed_x
 
-
-
+    # does same as above code, but for left paddle
+    if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
+        ball.speed_x = -ball.speed_x
 
 
 def main():
     #Create screen
-    player_one_score = 0
-    player_two_score = 0
 
     pygame.init()
     # initializes fonts for testing
     pygame.font.init()
     screen = pygame.display.set_mode((canvas_width, canvas_height))
     pygame.display.set_caption('Pong Game')
+
+    player_one_score = 0
+    player_two_score = 0
     
 
 
@@ -92,11 +96,12 @@ def main():
     player_one_paddle = Paddle(35, 400)
     player_two_paddle = Paddle(725, 400)
     # create initial instance of Ball class
-    ball = Ball(350, 500)
+    ball = Ball(350, 350)
 
     done = False
     while not done:
 
+        # Keyboard controls and quitting game
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -132,36 +137,21 @@ def main():
                 elif event.key == pygame.K_w:
                     player_two_paddle.speed_y = 0
 
+        # Handle off screen
 
-
-        # look for paddle collision
-
-        # if the ball's y position and x position matches player two paddle
-        if ball.y > player_two_paddle.y - 100 and ball.y < player_two_paddle.y + 100 and ball.x == player_two_paddle.x:
-            ball.speed_x = -ball.speed_x
-
-        # does same as above code, but for left paddle
-        if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
-            ball.speed_x = -ball.speed_x
-
-        # handle off screen
-        # if ball goes off right edge of screen
+        # if ball goes off screen to the right
         if ball.x > canvas_width:
-            # increment player one score by one
+            ball = Ball(350, 350)
             player_one_score += 1
-            # create new instance of Ball
+        elif ball.x < 0:
             ball = Ball(350, 350)
-        # if the ball goes off left edge of screen
-        if ball.x < 0:
-            # increment player two score by one
             player_two_score += 1
-            # create new instance of Ball
-            ball = Ball(350, 350)
 
+        collision(ball, player_one_paddle, player_two_paddle)
 
+        # --------------------------------------------- #
 
-
-
+        # Screen updates / rendering
             
         
 
@@ -192,6 +182,7 @@ def main():
 
         # updates game display
         pygame.display.update()
+
 
 
 main()
