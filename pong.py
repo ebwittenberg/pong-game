@@ -2,8 +2,12 @@
 
 import pygame
 
+# Initialize key values
 KEY_UP = 273
 KEY_DOWN = 274
+# Initialize screen width/height
+canvas_width = 800
+canvas_height = 800
 
 ## Create paddle class
 class Paddle():
@@ -19,13 +23,19 @@ class Paddle():
 
     def update(self):
         self.y = self.y + self.speed_y
+        # paddle cannot go off the bottom of the screen
+        if self.y > canvas_height - 75:
+            self.y = canvas_height - 75
+        # paddle cannot go off top of screen
+        elif self.y < 0:
+            self.y = 0
+
 
 
 
 def main():
     #Create screen
-    canvas_width = 800
-    canvas_height = 800
+
 
     pygame.init()
     screen = pygame.display.set_mode((canvas_width, canvas_height))
@@ -48,6 +58,10 @@ def main():
                 # key is keyed down
                 if event.key == KEY_DOWN:
                     player_one_paddle.speed_y = 6
+                    # if player one paddle is at the bottom of the screen
+                    # do not allow it to move further down
+                    #if player_one_paddle.y > canvas_height:
+                        #player_one_paddle.y = 0
                 if event.key == KEY_UP:
                     player_one_paddle.speed_y = -6
             
@@ -61,10 +75,9 @@ def main():
 
             
         
-        # fills the screen and makes it black
 
         player_one_paddle.update()
-
+        # fills the screen and makes it black
         screen.fill((0,0,0))
         # renders both paddles to the screen
         player_one_paddle.render(screen)
