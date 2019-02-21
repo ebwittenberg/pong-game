@@ -62,9 +62,6 @@ class Ball():
             # redirect ball downwards
             self.speed_y = -self.speed_y
     
-    def reset(self):
-        main()
-    
 
 class Net():
     def __init__(self, x, y):
@@ -78,25 +75,28 @@ class Net():
 
 
 
-
 def main():
     #Create screen
-
+    player_one_score = 0
+    player_two_score = 0
 
     pygame.init()
     # initializes fonts for testing
     pygame.font.init()
     screen = pygame.display.set_mode((canvas_width, canvas_height))
     pygame.display.set_caption('Pong Game')
+    
+
 
     # create two instances of Paddle class
     player_one_paddle = Paddle(35, 400)
     player_two_paddle = Paddle(725, 400)
-    # create instance of Ball class
+    # create initial instance of Ball class
     ball = Ball(350, 500)
 
     done = False
     while not done:
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
@@ -144,16 +144,19 @@ def main():
         if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
             ball.speed_x = -ball.speed_x
 
-        
-        # handle ball going off edge of screen
-
-        # ball goes off edge of screen to the right
-        if ball.x > canvas_width or ball.x < 0:
-            # reset ball in the middle of the screen
-            ball.reset()
-
-        
-        
+        # handle off screen
+        # if ball goes off right edge of screen
+        if ball.x > canvas_width:
+            # increment player one score by one
+            player_one_score += 1
+            # create new instance of Ball
+            ball = Ball(350, 350)
+        # if the ball goes off left edge of screen
+        if ball.x < 0:
+            # increment player two score by one
+            player_two_score += 1
+            # create new instance of Ball
+            ball = Ball(350, 350)
 
 
 
@@ -173,6 +176,12 @@ def main():
             net = Net(400, i)
             net.render_net(screen)
             i += 25
+
+        font = pygame.font.SysFont('Arial', 20)
+        score_one = font.render(str(player_one_score), True, (255,255,255))
+        score_two = font.render(str(player_two_score), True, (255,255,255))
+        screen.blit(score_one, (100, 100))
+        screen.blit(score_two, (200, 100))
 
         # renders both paddles to the screen
         player_one_paddle.render(screen)
