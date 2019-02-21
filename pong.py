@@ -31,6 +31,20 @@ class Paddle():
             self.y = 0
 
 
+class Ball():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+        self.speed_y = 10
+        self.speed_x = 10
+        self.radius = 10
+
+    def render_ball(self, screen):
+        pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.radius, 0)
+
+
+
+
 
 
 def main():
@@ -44,6 +58,8 @@ def main():
     # create instance of Paddle class
     player_one_paddle = Paddle(35, 400)
     player_two_paddle = Paddle(725, 400)
+    # create instance of Ball class
+    ball = Ball(400, 400)
 
 
     done = False
@@ -92,6 +108,7 @@ def main():
         # renders both paddles to the screen
         player_one_paddle.render(screen)
         player_two_paddle.render(screen)
+        ball.render_ball(screen)
 
 
 
