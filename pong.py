@@ -54,29 +54,39 @@ def main():
             
             # if a key is pressed down
             if event.type == pygame.KEYDOWN:
-                # active upwards or downwords movement when specific
-                # key is keyed down
+                # if down arrow is pressed
                 if event.key == KEY_DOWN:
                     player_one_paddle.speed_y = 6
-                    # if player one paddle is at the bottom of the screen
-                    # do not allow it to move further down
-                    #if player_one_paddle.y > canvas_height:
-                        #player_one_paddle.y = 0
+                # if s key is pressed
+                elif event.key == pygame.K_s:
+                    player_two_paddle.speed_y = 6
+                # if up arrow is pressed
                 if event.key == KEY_UP:
                     player_one_paddle.speed_y = -6
+                # if w key is pressed
+                elif event.key == pygame.K_w:
+                    player_two_paddle.speed_y = -6
             
             # if a key is pressed up (released)
             if event.type == pygame.KEYUP:
-                # want paddle to stop moving
+                # if down arrow is released
                 if event.key == KEY_DOWN:
                     player_one_paddle.speed_y = 0
+                # if s key is released
+                elif event.key == pygame.K_s:
+                    player_two_paddle.speed_y = 0
+                # if up arrow is released
                 if event.key == KEY_UP:
                     player_one_paddle.speed_y = 0
+                # if w key is released
+                elif event.key == pygame.K_w:
+                    player_two_paddle.speed_y = 0
 
             
         
 
         player_one_paddle.update()
+        player_two_paddle.update()
         # fills the screen and makes it black
         screen.fill((0,0,0))
         # renders both paddles to the screen
