@@ -12,6 +12,9 @@ class Paddle():
         # area of the rectangle
         self.rect = 100
 
+    def render(self, screen):
+        pygame.draw.rect(screen, (255,0,0), (35, 400, self.x, self.y), 0)
+
 def main():
     #Create screen
     canvas_width = 800
@@ -22,7 +25,7 @@ def main():
     pygame.display.set_caption('Pong Game')
 
     # create instance of Paddle class
-    paddle = Paddle(250, 250)
+    paddle = Paddle(40, 75)
 
     done = False
     while not done:
@@ -30,6 +33,8 @@ def main():
             if event.type == pygame.QUIT:
                 done = True
         screen.fill((0,0,0))
+        paddle.render(screen)
+        # pygame.draw.rect(screen, (255,0,0), (200, 200, 50, 150), 1)
         pygame.display.update()
 
 
