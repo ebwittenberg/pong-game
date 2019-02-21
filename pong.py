@@ -13,7 +13,7 @@ class Paddle():
         self.rect = 100
 
     def render(self, screen):
-        pygame.draw.rect(screen, (255,0,0), (35, 400, self.x, self.y), 0)
+        pygame.draw.rect(screen, (255,0,0), (self.x, self.y, 40, 75,), 0)
 
 def main():
     #Create screen
@@ -25,7 +25,7 @@ def main():
     pygame.display.set_caption('Pong Game')
 
     # create instance of Paddle class
-    paddle = Paddle(40, 75)
+    paddle = Paddle(35, 400)
 
     done = False
     while not done:
