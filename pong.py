@@ -42,6 +42,17 @@ class Ball():
     def render_ball(self, screen):
         pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.radius, 0)
 
+    def update(self):
+        # ball moves horizontally to the right
+        self.x = self.x + self.speed_x
+        # if ball reaches right edge of the screen
+        if self.x > canvas_width:
+            # redirect ball to the left
+            self.speed_x = -self.speed_x
+        if self.x < 0:
+            self.speed_x = -self.speed_x
+        # if ball reaches left edge of the screen
+
 
 
 
@@ -103,6 +114,7 @@ def main():
 
         player_one_paddle.update()
         player_two_paddle.update()
+        ball.update()
         # fills the screen and makes it black
         screen.fill((0,0,0))
         # renders both paddles to the screen
