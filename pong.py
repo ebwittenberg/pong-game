@@ -41,11 +41,21 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            
+            # if a key is pressed down
             if event.type == pygame.KEYDOWN:
                 # active upwards or downwords movement when specific
                 # key is keyed down
                 if event.key == KEY_DOWN:
                     player_one_paddle.speed_y = 5
+            
+            # if a key is pressed up (released)
+            if event.type == pygame.KEYUP:
+                # want paddle to stop moving
+                if event.key == KEY_DOWN:
+                    player_one_paddle.speed_y = -5
+
+            
         
         # fills the screen and makes it black
 
