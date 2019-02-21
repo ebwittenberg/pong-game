@@ -35,8 +35,8 @@ class Ball():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.speed_y = 10
-        self.speed_x = 10
+        self.speed_y = 3
+        self.speed_x = 3
         self.radius = 10
 
     def render_ball(self, screen):
@@ -45,13 +45,24 @@ class Ball():
     def update(self):
         # ball moves horizontally to the right
         self.x = self.x + self.speed_x
-        # if ball reaches right edge of the screen
+        # ball moves downwards
+        self.y = self.y + self.speed_y
+        # if ball reaches right edge of screen
         if self.x > canvas_width:
             # redirect ball to the left
             self.speed_x = -self.speed_x
+        # if ball reaches left edge of screen
         if self.x < 0:
             self.speed_x = -self.speed_x
-        # if ball reaches left edge of the screen
+        # if ball reaches bottom of screen
+        if self.y > canvas_height:
+            # redirect ball upwards
+            self.speed_y = -self.speed_y
+        # if ball reaches top of screen
+        if self.y < 0:
+            # redirect ball downwards
+            self.speed_y = -self.speed_y
+
 
 
 
