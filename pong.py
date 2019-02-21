@@ -2,18 +2,23 @@
 
 import pygame
 
+KEY_UP = 273
+KEY_DOWN = 274
+
 ## Create paddle class
 class Paddle():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.speed_x = 0
         self.speed_y = 0
         # area of the rectangle
         self.rect = 100
 
     def render(self, screen):
         pygame.draw.rect(screen, (255,0,0), (self.x, self.y, 20, 75,), 0)
+
+    def update(self):
+        self.y = self.y + self.speed_y
 
 
 
@@ -36,9 +41,24 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 done = True
+            if event.type == pygame.KEYDOWN:
+                # active upwards or downwords movement when specific
+                # key is keyed down
+                if event.key == KEY_DOWN:
+                    player_one_paddle.speed_y = 5
+        
+        # fills the screen and makes it black
+
+        player_one_paddle.update()
+
         screen.fill((0,0,0))
+        # renders both paddles to the screen
         player_one_paddle.render(screen)
         player_two_paddle.render(screen)
+
+
+
+        # updates game display
         pygame.display.update()
 
 
