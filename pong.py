@@ -49,17 +49,19 @@ class Ball():
         # ball moves downwards
         self.y = self.y + self.speed_y
         # if ball reaches right edge of screen
-        if self.x > canvas_width:
-            # redirect ball to the left
-            self.speed_x = -self.speed_x
+        #if self.x > canvas_width:
+            # ball resets in the middle
+            #ball.x = 400
+            #bal
+
 
 
 
 
 
         # if ball reaches left edge of screen
-        if self.x < 0:
-            self.speed_x = -self.speed_x
+        # if self.x < 0:
+            # self.speed_x = -self.speed_x
         # if ball reaches bottom of screen
         if self.y > canvas_height:
             # redirect ball upwards
@@ -68,6 +70,13 @@ class Ball():
         if self.y < 0:
             # redirect ball downwards
             self.speed_y = -self.speed_y
+
+class Net():
+    def __init__(self, x, y):
+        self.x = x
+        self.y = y
+    def render_net(self, screen):
+        pygame.draw.rect(screen, (255,255,255), (self.x, self.y, 5, 10), 0)
 
 
 
@@ -82,7 +91,6 @@ def main():
     pygame.init()
     # initializes fonts for testing
     pygame.font.init()
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)
     screen = pygame.display.set_mode((canvas_width, canvas_height))
     pygame.display.set_caption('Pong Game')
 
@@ -91,7 +99,6 @@ def main():
     player_two_paddle = Paddle(725, 400)
     # create instance of Ball class
     ball = Ball(350, 500)
-
 
     done = False
     while not done:
@@ -157,6 +164,13 @@ def main():
         ball.update()
         # fills the screen and makes it black
         screen.fill((0,0,0))
+        # create instances of Net class
+        i = 5
+        while i < 795:
+            net = Net(400, i)
+            net.render_net(screen)
+            i += 25
+
         # renders both paddles to the screen
         player_one_paddle.render(screen)
         player_two_paddle.render(screen)
