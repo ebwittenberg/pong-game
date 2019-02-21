@@ -47,13 +47,17 @@ def main():
                 # active upwards or downwords movement when specific
                 # key is keyed down
                 if event.key == KEY_DOWN:
-                    player_one_paddle.speed_y = 5
+                    player_one_paddle.speed_y = 6
+                if event.key == KEY_UP:
+                    player_one_paddle.speed_y = -6
             
             # if a key is pressed up (released)
             if event.type == pygame.KEYUP:
                 # want paddle to stop moving
                 if event.key == KEY_DOWN:
-                    player_one_paddle.speed_y = -5
+                    player_one_paddle.speed_y = 0
+                if event.key == KEY_UP:
+                    player_one_paddle.speed_y = 0
 
             
         
