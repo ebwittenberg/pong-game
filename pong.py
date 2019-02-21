@@ -19,7 +19,7 @@ class Paddle():
         self.rect = 100
 
     def render(self, screen):
-        pygame.draw.rect(screen, (255,0,0), (self.x, self.y, 20, 75,), 0)
+        pygame.draw.rect(screen, (255,0,0), (self.x, self.y, 10, 75,), 0)
 
     def update(self):
         self.y = self.y + self.speed_y
@@ -36,12 +36,16 @@ class Ball():
     def __init__(self, x, y):
         self.x = x
         self.y = y
-        self.speed_y = 3
-        self.speed_x = 3
+        self.speed_y = 0
+        self.speed_x = 0
         self.radius = 10
 
     def render_ball(self, screen):
         pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.radius, 0)
+    
+    def start_movement(self, speed_x, speed_y):
+        self.speed_y = 5
+        self.speed_x = 5
 
     def update(self):
 
@@ -70,11 +74,11 @@ class Net():
 
 def collision(ball, player_one_paddle, player_two_paddle):
     # if the ball's y position and x position matches player two paddle
-    if ball.y > player_two_paddle.y - 100 and ball.y < player_two_paddle.y + 100 and ball.x == player_two_paddle.x:
+    if ball.y > player_two_paddle.y - 30 and ball.y < player_two_paddle.y + 80 and (ball.x > player_two_paddle.x - 10 or ball.x == player_two_paddle.x):
         ball.speed_x = -ball.speed_x
 
     # does same as above code, but for left paddle
-    if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
+    if ball.y > player_one_paddle.y - 50 and ball.y < player_one_paddle.y + 75 and (ball.x < player_one_paddle.x + 20):
         ball.speed_x = -ball.speed_x
 
 
@@ -89,12 +93,14 @@ def main():
 
     player_one_score = 0
     player_two_score = 0
+
+    print(pygame.font.get_fonts())
     
 
 
     # create two instances of Paddle class
-    player_one_paddle = Paddle(35, 400)
-    player_two_paddle = Paddle(725, 400)
+    player_one_paddle = Paddle(35, 200)
+    player_two_paddle = Paddle(725, 600)
     # create initial instance of Ball class
     ball = Ball(350, 350)
 
@@ -108,6 +114,14 @@ def main():
             
             # if a key is pressed down
             if event.type == pygame.KEYDOWN:
+
+                # press space key to start ball movement
+                if event.key == pygame.K_SPACE:
+                    if player_one_score < player_two_score:
+                        ball.start_movement(-5, 0)
+                    else:
+                        ball.start_movement(5, 0)
+
                 # if down arrow is pressed
                 if event.key == KEY_DOWN:
                     player_one_paddle.speed_y = 6
@@ -141,12 +155,18 @@ def main():
 
         # if ball goes off screen to the right
         if ball.x > canvas_width:
+            # create new instance of Ball
             ball = Ball(350, 350)
+            # increment player one score
             player_one_score += 1
+        # if ball goes off screen to the left
         elif ball.x < 0:
+            # create new instance of Ball
             ball = Ball(350, 350)
+            # increment player two score
             player_two_score += 1
 
+        # handle collision between current Ball instance and paddles
         collision(ball, player_one_paddle, player_two_paddle)
 
         # --------------------------------------------- #
@@ -167,11 +187,11 @@ def main():
             net.render_net(screen)
             i += 25
 
-        font = pygame.font.SysFont('Arial', 20)
-        score_one = font.render(str(player_one_score), True, (255,255,255))
-        score_two = font.render(str(player_two_score), True, (255,255,255))
-        screen.blit(score_one, (100, 100))
-        screen.blit(score_two, (200, 100))
+        font = pygame.font.SysFont('chalkboard', 35)
+        score_one = font.render("Player One: %s" % str(player_one_score), True, (255,255,255))
+        score_two = font.render("Player Two: %s" % str(player_two_score), True, (255,255,255))
+        screen.blit(score_one, (100, 5))
+        screen.blit(score_two, (500, 5))
 
         # renders both paddles to the screen
         player_one_paddle.render(screen)
