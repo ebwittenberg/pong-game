@@ -47,7 +47,7 @@ class Ball():
         # ball moves horizontally to the right
         self.x = self.x + self.speed_x
         # ball moves downwards
-        # self.y = self.y + self.speed_y
+        self.y = self.y + self.speed_y
         # if ball reaches right edge of screen
         if self.x > canvas_width:
             # redirect ball to the left
@@ -61,13 +61,13 @@ class Ball():
         if self.x < 0:
             self.speed_x = -self.speed_x
         # if ball reaches bottom of screen
-        # if self.y > canvas_height:
+        if self.y > canvas_height:
             # redirect ball upwards
-            # self.speed_y = -self.speed_y
+            self.speed_y = -self.speed_y
         # if ball reaches top of screen
-        # if self.y < 0:
+        if self.y < 0:
             # redirect ball downwards
-            # self.speed_y = -self.speed_y
+            self.speed_y = -self.speed_y
 
 
 
