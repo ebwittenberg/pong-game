@@ -49,16 +49,7 @@ class Ball():
         # ball moves downwards
         self.y = self.y + self.speed_y
         # if ball reaches right edge of screen
-        #if self.x > canvas_width:
             # ball resets in the middle
-            #ball.x = 400
-            #bal
-
-
-
-
-
-
         # if ball reaches left edge of screen
         # if self.x < 0:
             # self.speed_x = -self.speed_x
@@ -70,6 +61,10 @@ class Ball():
         if self.y < 0:
             # redirect ball downwards
             self.speed_y = -self.speed_y
+    
+    def reset(self):
+        main()
+    
 
 class Net():
     def __init__(self, x, y):
@@ -148,6 +143,14 @@ def main():
         # does same as above code, but for left paddle
         if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
             ball.speed_x = -ball.speed_x
+
+        
+        # handle ball going off edge of screen
+
+        # ball goes off edge of screen to the right
+        if ball.x > canvas_width or ball.x < 0:
+            # reset ball in the middle of the screen
+            ball.reset()
 
         
         
