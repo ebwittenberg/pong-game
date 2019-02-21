@@ -30,6 +30,7 @@ class Paddle():
         elif self.y < 0:
             self.y = 0
 
+## Create Ball class
 
 class Ball():
     def __init__(self, x, y):
@@ -46,22 +47,27 @@ class Ball():
         # ball moves horizontally to the right
         self.x = self.x + self.speed_x
         # ball moves downwards
-        self.y = self.y + self.speed_y
+        # self.y = self.y + self.speed_y
         # if ball reaches right edge of screen
         if self.x > canvas_width:
             # redirect ball to the left
             self.speed_x = -self.speed_x
+
+
+
+
+
         # if ball reaches left edge of screen
         if self.x < 0:
             self.speed_x = -self.speed_x
         # if ball reaches bottom of screen
-        if self.y > canvas_height:
+        # if self.y > canvas_height:
             # redirect ball upwards
-            self.speed_y = -self.speed_y
+            # self.speed_y = -self.speed_y
         # if ball reaches top of screen
-        if self.y < 0:
+        # if self.y < 0:
             # redirect ball downwards
-            self.speed_y = -self.speed_y
+            # self.speed_y = -self.speed_y
 
 
 
@@ -74,14 +80,17 @@ def main():
 
 
     pygame.init()
+    # initializes fonts for testing
+    pygame.font.init()
+    myfont = pygame.font.SysFont('Comic Sans MS', 30)
     screen = pygame.display.set_mode((canvas_width, canvas_height))
     pygame.display.set_caption('Pong Game')
 
-    # create instance of Paddle class
+    # create two instances of Paddle class
     player_one_paddle = Paddle(35, 400)
     player_two_paddle = Paddle(725, 400)
     # create instance of Ball class
-    ball = Ball(400, 400)
+    ball = Ball(350, 500)
 
 
     done = False
@@ -104,6 +113,7 @@ def main():
                 # if w key is pressed
                 elif event.key == pygame.K_w:
                     player_two_paddle.speed_y = -6
+
             
             # if a key is pressed up (released)
             if event.type == pygame.KEYUP:
@@ -119,6 +129,25 @@ def main():
                 # if w key is released
                 elif event.key == pygame.K_w:
                     player_two_paddle.speed_y = 0
+
+
+
+        # look for paddle collision
+
+        # if the ball's y position and x position matches player two paddle
+        if ball.y > player_two_paddle.y - 100 and ball.y < player_two_paddle.y + 100 and ball.x == player_two_paddle.x:
+            ball.speed_x = -ball.speed_x
+
+        # does same as above code, but for left paddle
+        if ball.y > player_one_paddle.y - 100 and ball.y < player_one_paddle.y + 100 and ball.x == player_one_paddle.x:
+            ball.speed_x = -ball.speed_x
+
+        
+        
+
+
+
+
 
             
         
