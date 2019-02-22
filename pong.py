@@ -3,6 +3,8 @@
 import pygame
 import title_screen
 
+
+
 # Initialize key values
 KEY_UP = 273
 KEY_DOWN = 274
@@ -46,7 +48,7 @@ class Ball():
     
     def move_ball(self, speed_x, speed_y):
         self.speed_y = 7
-        self.speed_x = 7
+        self.speed_x = speed_x
 
     def update(self):
 
@@ -91,9 +93,9 @@ def collision(ball, player_one_paddle, player_two_paddle):
 def start_movement(event, key_event, score1, score2, ball):
     if event.key  == key_event:
         if score1 < score2:
-            ball.move_ball(-5, 0)
+            ball.move_ball(-7, 0)
         else:
-            ball.move_ball(5, 0)
+            ball.move_ball(7, 0)
 
 
 
@@ -129,7 +131,6 @@ def main():
             
             # if a key is pressed down
             if event.type == pygame.KEYDOWN:
-                start_movement(event, pygame.K_SPACE, player_one_score, player_two_score, ball)
                 if event.key == pygame.K_y:
                     main()
 
@@ -184,6 +185,12 @@ def main():
             player_two_paddle.y = 600
             # increment player two score
             player_two_score += 1
+            collision_counter = 0
+
+        # Give ball verticle movement after first collision
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE:
+                start_movement(event, pygame.K_SPACE, player_one_score, player_two_score, ball)
 
         # Handle collison and incremement counter
         if collision(ball, player_one_paddle, player_two_paddle):
@@ -220,7 +227,7 @@ def main():
         # check for game over
         if player_one_score >= 7 or player_two_score >= 7:
             font = pygame.font.SysFont('chalkboard', 50)
-            game_over = font.render('Game over! Press "Y" to play again', True, (255,255,255))
+            game_over = font.render('Game over! Press Y to play again', True, (255,255,255))
             screen.blit(game_over, (100, 400))
 
 
