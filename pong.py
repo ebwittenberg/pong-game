@@ -1,6 +1,7 @@
 ## Create a functioning pong game using the pygame library
 
 import pygame
+import title_screen
 
 # Initialize key values
 KEY_UP = 273
@@ -43,9 +44,9 @@ class Ball():
     def render_ball(self, screen):
         pygame.draw.circle(screen, (255,255,255), (self.x, self.y), self.radius, 0)
     
-    def start_movement(self, speed_x, speed_y):
-        self.speed_y = 5
-        self.speed_x = 5
+    def move_ball(self, speed_x, speed_y):
+        self.speed_y = 7
+        self.speed_x = 7
 
     def update(self):
 
@@ -64,7 +65,6 @@ class Ball():
             # redirect ball downwards
             self.speed_y = -self.speed_y
 
-
 class Net():
     def __init__(self, x, y):
         self.x = x
@@ -72,14 +72,23 @@ class Net():
     def render_net(self, screen):
         pygame.draw.rect(screen, (255,255,255), (self.x, self.y, 5, 10), 0)
 
+# Function definitions
 def collision(ball, player_one_paddle, player_two_paddle):
     # if the ball's y position and x position matches player two paddle
-    if ball.y > player_two_paddle.y - 30 and ball.y < player_two_paddle.y + 80 and (ball.x > player_two_paddle.x - 10 or ball.x == player_two_paddle.x):
-        ball.speed_x = -ball.speed_x
+    if ball.y > player_two_paddle.y - 30 and  ball.y < player_two_paddle.y + 80 and (ball.x > player_two_paddle.x - 10 or ball.x == player_two_paddle.x):
+       ball.speed_x = -ball.speed_x
 
     # does same as above code, but for left paddle
-    if ball.y > player_one_paddle.y - 50 and ball.y < player_one_paddle.y + 75 and (ball.x < player_one_paddle.x + 20):
+    if ball.y > player_one_paddle.y - 50 and ball.y < player_one_paddle.y + 75 and (ball.x < player_one_paddle.x + 10):
         ball.speed_x = -ball.speed_x
+
+def start_movement(event, key_event, score1, score2, ball):
+    if event.key  == key_event:
+        if score1 < score2:
+            ball.move_ball(-5, 0)
+        else:
+            ball.move_ball(5, 0)
+
 
 
 def main():
@@ -94,8 +103,7 @@ def main():
     player_one_score = 0
     player_two_score = 0
 
-    print(pygame.font.get_fonts())
-    
+
 
 
     # create two instances of Paddle class
@@ -114,13 +122,9 @@ def main():
             
             # if a key is pressed down
             if event.type == pygame.KEYDOWN:
-
-                # press space key to start ball movement
-                if event.key == pygame.K_SPACE:
-                    if player_one_score < player_two_score:
-                        ball.start_movement(-5, 0)
-                    else:
-                        ball.start_movement(5, 0)
+                start_movement(event, pygame.K_SPACE, player_one_score, player_two_score, ball)
+                if event.key == pygame.K_y:
+                    main()
 
                 # if down arrow is pressed
                 if event.key == KEY_DOWN:
@@ -134,6 +138,10 @@ def main():
                 # if w key is pressed
                 elif event.key == pygame.K_w:
                     player_two_paddle.speed_y = -6
+
+                # if y key is pressed, restart game
+                if event.key == pygame.K_y:
+                    main()
 
             
             # if a key is pressed up (released)
@@ -159,10 +167,13 @@ def main():
             ball = Ball(350, 350)
             # increment player one score
             player_one_score += 1
+
         # if ball goes off screen to the left
         elif ball.x < 0:
             # create new instance of Ball
             ball = Ball(350, 350)
+            player_one_paddle.y = 200
+            player_two_paddle.y = 600
             # increment player two score
             player_two_score += 1
 
@@ -188,10 +199,18 @@ def main():
             i += 25
 
         font = pygame.font.SysFont('chalkboard', 35)
-        score_one = font.render("Player One: %s" % str(player_one_score), True, (255,255,255))
-        score_two = font.render("Player Two: %s" % str(player_two_score), True, (255,255,255))
+        score_one = font.render("Player One: %s" % (str(player_one_score)), True, (255,255,255))
+        score_two = font.render("Player Two: %s" % (str(player_two_score)), True, (255,255,255))
         screen.blit(score_one, (100, 5))
         screen.blit(score_two, (500, 5))
+
+        # check for game over
+        if player_one_score >= 7 or player_two_score >= 7:
+            font = pygame.font.SysFont('chalkboard', 50)
+            game_over = font.render('Game over! Press "Y" to play again', True, (255,255,255))
+            screen.blit(game_over, (100, 400))
+
+
 
         # renders both paddles to the screen
         player_one_paddle.render(screen)
@@ -205,5 +224,6 @@ def main():
 
 
 
-main()
+if title_screen.title_screen() == True:
+    main()
     
